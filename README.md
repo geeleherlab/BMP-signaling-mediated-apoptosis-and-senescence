@@ -19,8 +19,9 @@ library required:
 ```
 
 # Scripts for ChIP-seq analysis
-`ChIP.genome.anno.r` the script use ChIP-seq peaks, the narrowpeak files that called from mac2, as input files, and provide annotations of distribution of transciption factor binding loci relative to transcription start site.
+`ChIP.genome.anno.r` the script use ChIP-seq peaks, the narrowpeak files that called from mac2, as input files, and provide annotations of distribution of transciption factor binding loci relative to transcription start site.  
 
+`ChIP.GSEApathway.venn.r` The script utilizes the combined peaks from various transcription factors, such as RARA and SMAD4, to calculate the overlapping number of peaks among different transcription factors. Additionally, the script analyzes the differential ChIP signals for each transcription factor under specific conditions. It also performs GSEA annotation based on peak intensity for each ChIP-seq samples.
 
 # Scripts for RNA-seq analysis
 
