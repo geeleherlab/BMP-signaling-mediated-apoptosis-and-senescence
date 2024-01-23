@@ -30,7 +30,10 @@ library required:
 
 `ChIP.peak.correlation.r` The script calculates the correlation matrix for the binding intensity of peaks between each pair of samples, considering various treatment conditions in a specific cell type.
 
-# Scripts for RNA-seq analysis
+
+# Scripts for RNA-seq analysis  
+
+`RNA.pathwayanno.cellline.r` The script executes GSEA and hypergeometric-based pathway enrichment analysis on differentially expressed genes between two samples under comparison, utilizing comprehensive annotation databases such as KEGG, GO, and Bioplanet. Additionally, the script performs PCA analysis on various samples based on the gene expression read counts of all genes.
 
 # Scripts for integrative analysis between ChIP-seq and RNA-seq data
 
