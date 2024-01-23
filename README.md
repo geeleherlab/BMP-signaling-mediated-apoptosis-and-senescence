@@ -1,6 +1,6 @@
 # Introduction
 
-Here are the scripts used for high-throughput ChIP-seq and RNA-seq data analysis in the research study titled 
+Here are the R scripts used for high-throughput ChIP-seq and RNA-seq data analysis in the research study titled 
 'Bone Morphogenetic Protein (BMP) Signaling in Determining Neuroblastoma Cell Fate and Sensitivity to Retinoic Acid'.
 
 
@@ -19,7 +19,7 @@ library required:
 ```
 
 # Scripts for ChIP-seq analysis
-
+`ChIP.genome.anno.r` the script use ChIP-seq peaks, the narrowpeak files that called from mac2, as input files, and provide annotations of distribution of transciption factor binding loci relative to transcription start site.
 
 
 # Scripts for RNA-seq analysis
