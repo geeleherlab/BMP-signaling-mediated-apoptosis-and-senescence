@@ -39,7 +39,7 @@ Usage:
                                       DMSO_2,DMSO,2
                                       RA_1,RA,1
                                       RA_2,RA,2
-  -o <dir>  output file,forced  
+  -o <file>  output file,forced  
   -h         Help
 
 USAGE
@@ -79,12 +79,14 @@ foreach my $sam (keys %sample){
 			if($a ne $b){
 				my $low;
 				my $count=0;
+
 				foreach my $p (@peaks){
-					if($p=~/$sample{$sam}{$b}/&& $p=~/FDR50/){
+					if($p=~/$sample{$sam}{$b}/ && $p=~/FDR50/){
 						$low=$p;
 						$count++;
 					}
 				}
+
 				if($count==1){
 					if($count==(keys %{$sample{$sam}})-1){
 						print OUT "bedtools intersect -a $high -b $low -u > $sample{$sam}{$a}.keep.bed\n";

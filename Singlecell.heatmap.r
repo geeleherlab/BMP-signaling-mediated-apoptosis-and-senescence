@@ -1,5 +1,4 @@
-#setwd("C:/Users/yzhang24/OneDrive - St. Jude Children's Research Hospital/Documents/sjproject/single_RNA")
-setwd("Z:/ResearchHome/Groups/geelegrp/home/yzhang24/1_RA_BMP/3_RA_SMAD9_Project/5_single_RNA/")
+setwd("Z:/ResearchHome/Groups/geelegrp/home/yzhang24/1_RA_BMP/3_RA_SMAD9_Project/7_scripts")
 library("ggplot2")
 library(tidyverse)
 library("DESeq2")
@@ -18,10 +17,10 @@ library(cowplot)
 
 genelist=c("ID1","ID2","ID3","ID4","SMAD9")
 
-t_gosh <- Sys.glob("./GOSH/GEP_*.csv")
-t_dong <- Sys.glob("./dong/GEP_*.csv")
-t_bmr <- Sys.glob("./BMR/reports_baseNMF_combined/GEP_*.csv")
-t_human_pdx <- Sys.glob("./PDX/PDX_Human/GEP_*.csv")
+t_gosh <- Sys.glob("./data/7_Singlecell_heatmap/GOSH/GEP_*.csv")
+t_dong <- Sys.glob("./data/7_Singlecell_heatmap/dong/GEP_*.csv")
+t_bmr <- Sys.glob("./data/7_Singlecell_heatmap/BMR/GEP_*.csv")
+t_human_pdx <- Sys.glob("./data/7_Singlecell_heatmap/PDX/GEP_*.csv")
 
 d_gosh=data.frame()
 d_dong=data.frame()
@@ -123,10 +122,10 @@ for(i in seq_along(t_human_pdx)){
 
 #############################################Annotation and result plot output
 
-a_gosh=read.csv("./GOSH_annotation.csv",header=T)
-a_dong=read.csv("./dong_annotation.csv",header=T)
-a_bmr=read.csv("./bone_marrow_annotation.csv",header = T)
-a_human_pdx=read.csv("./humanPDX_annotation.csv",header = T)
+a_gosh=read.csv("./data/7_Singlecell_heatmap/annotation/GOSH_annotation.csv",header=T)
+a_dong=read.csv("./data/7_Singlecell_heatmap/annotation/dong_annotation.csv",header=T)
+a_bmr=read.csv("./data/7_Singlecell_heatmap/annotation/bone_marrow_annotation.csv",header = T)
+a_human_pdx=read.csv("./data/7_Singlecell_heatmap/annotation/humanPDX_annotation.csv",header = T)
 
 a_gosh$program=as.character(a_gosh$program)
 a_dong$program=as.character(a_dong$program)
@@ -163,10 +162,8 @@ write.table(d_dong_anno[,1:9],"./d_dong_anno.IDs.TPM.table",quote = F,row.names 
 write.table(d_bmr_anno[,1:9],"./d_bmr_anno.IDs.TPM.table",quote = F,row.names = F,sep = "\t")
 write.table(d_human_pdx_anno[,1:9],"./d_human_pdx_anno.IDs.TPM.table",quote = F,row.names = F,sep = "\t")
 
-  #aa=read.table("./d_dong_anno.IDs.TPM.table",header = T,sep = "\t")
 
-
-d_cell_anno=read.csv("./cell.mouse.format.csv",header=T)
+d_cell_anno=read.csv("./data/7_Singlecell_heatmap/cell.mouse.format.csv",header=T)
 
 d_bmr_anno=rbind(d_bmr_anno,d_cell_anno)%>%
             mutate(anno2=paste(program,annotation,sep="-"))%>%
@@ -183,9 +180,6 @@ d_dong_anno=rbind(d_dong_anno,d_cell_anno) %>%
 d_human_pdx_anno=rbind(d_human_pdx_anno,d_cell_anno) %>%
   mutate(anno2=paste(program,annotation,sep="-"))%>%
   mutate(textcolor=ifelse(cancer=='yes',"red",ifelse(cancer=="no","black","blue")))
-
-
-
 
 #######################Heatmap for bone marrow
 bmr_id1=d_bmr_anno[d_bmr_anno$Gene=='ID1',]

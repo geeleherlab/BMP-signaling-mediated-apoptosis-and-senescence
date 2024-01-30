@@ -1,5 +1,6 @@
-setwd("Z:/ResearchHome/Groups/geelegrp/home/yzhang24/1_RA_BMP/3_RA_SMAD9_Project/4_integrate/")
-#setwd( "/Volumes/groups/geelegrp/home/yzhang24/1_RA_BMP/2_RNAChip/chip_consensus_ref/" )
+
+setwd("Z:/ResearchHome/Groups/geelegrp/home/yzhang24/1_RA_BMP/3_RA_SMAD9_Project/7_scripts")
+
 library("ggplot2")
 library(tidyverse)
 library("DESeq2")
@@ -15,14 +16,15 @@ library(ggridges)
 ##################################read files
 ###read RNA and ChIP information
 ###read chip peaks overlapped between RARA and SMAD4, which also include information of differential peaks information for two TFs
-dc=read.csv("../1_ChIP/results/1_CHP134/RARA_SMAD4/overlap.SMAD4.RARA.csv")[,c("Closest_Gene","Distance","RARA_diffpeak","SMAD4_diffpeak")] %>%
+
+dc=read.csv("./data/6_Integrative_RNA_ChIP/overlap.SMAD4.RARA.csv")[,c("Closest_Gene","Distance","RARA_diffpeak","SMAD4_diffpeak")] %>%
   group_by(Closest_Gene) %>%
   filter(Distance==min(Distance)) %>%
   distinct(Closest_Gene, .keep_all = TRUE) %>%
   ungroup()
 
 ###RNA-seq
-dr=read.csv("../3_RNA/all.rawcounts.Deseq2.metrics.csv")
+dr=read.csv("./data/6_Integrative_RNA_ChIP/all.rawcounts.Deseq2.metrics.csv")
 
 #################################Main:
 ###1. find the overlaps between differential expressed genes and differential changed RARA peaks
@@ -102,12 +104,9 @@ pdf("overlap.DEG.ChIP.statistic2.pdf", width=19, height=12)
 plot_grid(p1, p2, p3,p4, nrow = 2, label_size = 12)
 dev.off()
 
-
-
-
 ###2. how much of apoptosis, cell cycle, differentiation and TGF involved genes are DEG and their changes in 1,3 and 6 RA treatment. and the distribution of their foldchanges
 
-dp=read.csv("./data/genes.in.four.pathway.addchip.csv")%>%
+dp=read.csv("./data/6_Integrative_RNA_ChIP/genes.in.four.pathway.addchip.csv")%>%
   filter(cellline =='CHP134')####genes in pathway, and also have chip signal of RARA&SMAD4
 dp$pathway=as.factor(dp$pathway)
 

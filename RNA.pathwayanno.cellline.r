@@ -1,4 +1,4 @@
-setwd("Z:/ResearchHome/Groups/geelegrp/home/yzhang24/1_RA_BMP/2_RNAChip/")
+setwd("Z:/ResearchHome/Groups/geelegrp/home/yzhang24/1_RA_BMP/3_RA_SMAD9_Project/7_scripts")
 library("ggplot2")
 library(tidyverse)
 library("clusterProfiler")
@@ -28,17 +28,17 @@ library(pheatmap)
 
 #browseVignettes("ChIPpeakAnno")
 
-
 ################1. check the pathway enrichment for differential genes of each group and the overlapped core genes
-mainDir <- "Z:/ResearchHome/Groups/geelegrp/home/yzhang24/1_RA_BMP/2_RNAChip/enrichment_results_fpkm"
+mainDir <- "Z:/ResearchHome/Groups/geelegrp/home/yzhang24/1_RA_BMP/3_RA_SMAD9_Project/7_scripts/enrichment_results_fpkm"
 dir.create(file.path(mainDir))
+
 ########################input, read gmt files for Kegg,Go,Bioplanet and DSigDB, TFppi and histon factor
-kegg=read.gmt("./list/enrichr/KEGG_2021_Human.txt")
-go_b=read.gmt("./list/enrichr/GO_Biological_Process_2021.txt")
-bplan=read.gmt("./list/enrichr/BioPlanet_2019.txt")
-dsig=read.gmt("./list/enrichr/DSigDB.txt")
-ppi=read.gmt("./list/enrichr/TRRUST_Transcription_Factors_2019.txt")
-his=read.gmt("./list/enrichr/ENCODE_Histone_Modifications_2015.txt")
+kegg=read.gmt("./data/4_RNA_pathwayanno_cellline/enrichr/KEGG_2021_Human.txt")
+go_b=read.gmt("./data/4_RNA_pathwayanno_cellline/enrichr/GO_Biological_Process_2021.txt")
+bplan=read.gmt("./data/4_RNA_pathwayanno_cellline/enrichr/BioPlanet_2019.txt")
+dsig=read.gmt("./data/4_RNA_pathwayanno_cellline/enrichr/DSigDB.txt")
+ppi=read.gmt("./data/4_RNA_pathwayanno_cellline/enrichr/TRRUST_Transcription_Factors_2019.txt")
+his=read.gmt("./data/4_RNA_pathwayanno_cellline/enrichr/ENCODE_Histone_Modifications_2015.txt")
 gmt=list(kegg=kegg,go=go_b,bplan=bplan,drug=dsig,tfppi=ppi,histone=his)
 
 #######################annotated DEG genes for each group, to generating some basic results (plot&tables)
@@ -46,7 +46,8 @@ gmt=list(kegg=kegg,go=go_b,bplan=bplan,drug=dsig,tfppi=ppi,histone=his)
 ###########################################################################################
 #browseVignettes("clusterProfiler")
 
-files=Sys.glob("./data/rna/NBCellLines_2377244/*_FPKM.tsv")
+files=Sys.glob("Z:/ResearchHome/Groups/geelegrp/home/yzhang24/1_RA_BMP/3_RA_SMAD9_Project/7_scripts/data/4_RNA_pathwayanno_cellline/rna/*_FPKM.tsv")
+
 for (f in files){
   s=read.table(f,header = T)
   deg=unique(s[s$P.Value<0.05&abs(s$log2FC)>1,2:3])
@@ -95,7 +96,6 @@ for (f in files){
        p2=dotplot(y, showCategory=20)
        p3=upsetplot(y)
        p4=ridgeplot(y)
-      #p5=gseaplot2(y, geneSetID = 1:4, pvalue_table = TRUE)
 
        plotfile=paste0("./",dbname,".GSEA.pdf")
        pdf(plotfile, width=15, height=12)
@@ -106,22 +106,19 @@ for (f in files){
      }
      
      c=c+1
-     #break
   }
-  #break
 }
-
-# pdf("./runningscore.GSEA.bplan.pdf", width=15, height=12)
-# p5
-# dev.off()
 
 ################################################################################################################
 ###############Section 2 PCA test, check the RNA seq sample quality
 ################################################################################################################
 ###################extract CPM value from files
-setwd("Z:/ResearchHome/Groups/geelegrp/home/yzhang24/1_RA_BMP/2_RNAChip/")
-c=read.table("./data/rna/NBCellLines_2377244/GEELE-NBCellLines-2377244-STRANDED_RSEM_gene_count.2022-03-12_03-56-57.txt",header = T)
-fk=read.table("./data/rna/NBCellLines_2377244/GEELE-NBCellLines-2377244-STRANDED_RSEM_gene_FPKM.2022-03-12_03-56-57.txt",header = T)
+
+setwd("Z:/ResearchHome/Groups/geelegrp/home/yzhang24/1_RA_BMP/3_RA_SMAD9_Project/7_scripts")
+
+c=read.table("./data/4_RNA_pathwayanno_cellline/rna/GEELE-NBCellLines-2377244-STRANDED_RSEM_gene_count.2022-03-12_03-56-57.txt",header = T)
+fk=read.table("./data/4_RNA_pathwayanno_cellline/rna/GEELE-NBCellLines-2377244-STRANDED_RSEM_gene_FPKM.2022-03-12_03-56-57.txt",header = T)
+
 #########calculate colume sum, and get CMP
 cmp=cbind(c[,1:4],log2(c[,c(5:28)]*1e6/colSums(c[,c(5:28)])))
 fk=cbind(c[,1:4],log2(fk[,c(5:28)]))
@@ -135,9 +132,6 @@ ins3=t(scale(t(sub2)))
 ins4=ins3[complete.cases(ins3),]
 length(ins4[,1])
 
-#ins4$var=rowVars(ins4)
-#s2=ins4[order(ins4$var,decreasing = T),]
-#s3=subset (s2[1:3000,],select=-c(var))
 pca=prcomp(t(ins4),scale=T,rank.=3)
 
 tot <- summary(pca)[["importance"]]['Proportion of Variance',1:3]
